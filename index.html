@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポータルサイト 2027</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        /* ロード中のスピナーアニメーション */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 pb-20">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <i data-lucide="book-open" class="w-6 h-6 sm:w-8 sm:h-8"></i>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-wider">ポータルサイト 2027</h1>
+            </div>
+            <!-- ユーザー情報表示エリア -->
+            <div id="user-info" class="hidden flex items-center gap-3 text-sm">
+                <span id="display-username" class="font-medium bg-blue-700 px-3 py-1 rounded-full hidden sm:inline-block"></span>
+                <button id="logout-btn" class="hover:text-blue-200 transition-colors flex items-center gap-1">
+                    <i data-lucide="log-out" class="w-4 h-4"></i><span class="hidden sm:inline">ログアウト</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8 space-y-8">
+
+        <!-- Countdown Section -->
+        <section class="bg-gradient-to-r from-blue-500 to-teal-400 rounded-2xl shadow-lg p-6 sm:p-8 text-white text-center relative overflow-hidden">
+            <!-- 装飾用背景アイコン -->
+            <i data-lucide="target" class="absolute -right-10 -bottom-10 w-48 h-48 opacity-10 text-white"></i>
+            
+            <h2 class="text-lg sm:text-xl font-bold mb-4 flex items-center justify-center gap-2 relative z-10">
+                <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                2027年 共通テスト（1月16日・17日）まであと...
+            </h2>
+            <div id="countdown-container" class="flex flex-wrap justify-center gap-3 sm:gap-6 mt-6 relative z-10">
+                <div class="glass-card text-blue-900 rounded-xl px-4 py-3 sm:px-6 sm:py-4 min-w-[80px] sm:min-w-[100px] shadow-sm">
+                    <div id="days" class="text-4xl sm:text-5xl font-black tabular-nums">--</div>
+                    <div class="text-xs sm:text-sm font-bold mt-1 text-slate-500">日</div>
+                </div>
+                <div class="glass-card text-blue-900 rounded-xl px-4 py-3 sm:px-6 sm:py-4 min-w-[80px] sm:min-w-[100px] shadow-sm">
+                    <div id="hours" class="text-4xl sm:text-5xl font-black tabular-nums">--</div>
+                    <div class="text-xs sm:text-sm font-bold mt-1 text-slate-500">時間</div>
+                </div>
+                <div class="glass-card text-blue-900 rounded-xl px-4 py-3 sm:px-6 sm:py-4 min-w-[80px] sm:min-w-[100px] shadow-sm">
+                    <div id="minutes" class="text-4xl sm:text-5xl font-black tabular-nums">--</div>
+                    <div class="text-xs sm:text-sm font-bold mt-1 text-slate-500">分</div>
+                </div>
+                <div class="glass-card text-blue-900 rounded-xl px-4 py-3 sm:px-6 sm:py-4 min-w-[80px] sm:min-w-[100px] shadow-sm">
+                    <div id="seconds" class="text-4xl sm:text-5xl font-black tabular-nums">--</div>
+                    <div class="text-xs sm:text-sm font-bold mt-1 text-slate-500">秒</div>
+                </div>
+            </div>
+            <p id="countdown-message" class="mt-6 text-lg font-medium hidden relative z-10">共通テスト当日です！応援しています！</p>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Left Column: Links -->
+            <div class="space-y-6">
+                <!-- 学習サイトリンク -->
+                <section class="bg-white rounded-2xl shadow-sm p-6 border border-slate-200">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700 border-b pb-2">
+                        <i data-lucide="laptop" class="w-5 h-5 text-blue-500"></i>
+                        おすすめ学習サイト
+                    </h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#" class="group flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-blue-100 text-blue-600 p-2 rounded-md"><i data-lucide="pencil" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-blue-700">スタディサプリ (講義動画)</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-blue-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="group flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-indigo-100 text-indigo-600 p-2 rounded-md"><i data-lucide="languages" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-blue-700">mikan (英単語アプリ)</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-blue-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="group flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-teal-100 text-teal-600 p-2 rounded-md"><i data-lucide="youtube" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-blue-700">とある男が授業をしてみた (YouTube)</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-blue-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="group flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-orange-100 text-orange-600 p-2 rounded-md"><i data-lucide="calculator" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-blue-700">数学過去問データベース</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-blue-500"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- 大学入試情報リンク -->
+                <section class="bg-white rounded-2xl shadow-sm p-6 border border-slate-200">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700 border-b pb-2">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 text-teal-500"></i>
+                        募集要項・入試情報
+                    </h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="https://www.dnc.ac.jp/" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3 rounded-lg hover:bg-teal-50 transition-colors border border-transparent hover:border-teal-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-slate-100 text-slate-600 p-2 rounded-md"><i data-lucide="building-2" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-teal-700">大学入試センター（公式サイト）</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://passnavi.obunsha.co.jp/" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3 rounded-lg hover:bg-teal-50 transition-colors border border-transparent hover:border-teal-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-slate-100 text-slate-600 p-2 rounded-md"><i data-lucide="search" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-teal-700">大学受験パスナビ（旺文社）</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://telemail.jp/" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3 rounded-lg hover:bg-teal-50 transition-colors border border-transparent hover:border-teal-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-slate-100 text-slate-600 p-2 rounded-md"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+                                    <span class="font-medium text-slate-700 group-hover:text-teal-700">テレメール（パンフ・願書請求）</span>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <!-- Right Column: Checklist & Login -->
+            <div class="space-y-6 flex flex-col h-[600px] lg:h-auto">
+                
+                <!-- ログインセクション -->
+                <section id="login-section" class="bg-white rounded-2xl shadow-sm p-8 border border-slate-200 text-center flex flex-col justify-center flex-1">
+                    <div class="mb-6 flex justify-center">
+                        <div class="bg-blue-100 text-blue-600 p-4 rounded-full">
+                            <i data-lucide="user-circle" class="w-12 h-12"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-700 mb-2">ログインしてタスクを管理</h2>
+                    <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+                        ユーザーIDを入力してください。<br>
+                        （データはGoogleスプレッドシートに保存・同期されます）
+                    </p>
+                    
+                    <form id="login-form" class="max-w-xs mx-auto w-full space-y-4">
+                        <input type="text" id="userid-input" placeholder="ユーザーID (例: taro2027)" 
+                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-lg" required>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition-colors font-bold shadow-sm flex justify-center items-center gap-2">
+                            ログイン <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                    
+                    <div id="gas-warning" class="mt-6 text-xs text-red-500 hidden bg-red-50 p-3 rounded text-left">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 inline mb-1"></i> 
+                        <span class="font-bold">連携準備が未完了です:</span><br>
+                        ソースコード内の <code>GAS_WEB_APP_URL</code> に正しいURLを設定してください。
+                    </div>
+                </section>
+
+                <!-- チェックリストセクション -->
+                <section id="task-section" class="hidden bg-white rounded-2xl shadow-sm p-6 border border-slate-200 flex flex-col flex-1 relative overflow-hidden">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700 border-b pb-2 shrink-0">
+                        <i data-lucide="check-square" class="w-5 h-5 text-green-500"></i>
+                        やることチェックリスト
+                    </h2>
+                    
+                    <!-- 追加フォーム -->
+                    <form id="task-form" class="flex gap-2 mb-4 shrink-0">
+                        <input type="text" id="task-input" placeholder="新しいタスクを入力..." 
+                            class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required disabled>
+                        <button type="submit" id="task-submit-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-1 font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap" disabled>
+                            <i data-lucide="plus" class="w-4 h-4"></i> 追加
+                        </button>
+                    </form>
+
+                    <!-- 通信中ステータス -->
+                    <div id="sync-status" class="hidden absolute top-4 right-4 text-xs text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-blue-100 z-10 transition-opacity">
+                        <div class="loader w-3 h-3 border-2"></div> <span>同期中...</span>
+                    </div>
+
+                    <!-- リスト -->
+                    <div class="flex-1 overflow-y-auto pr-1 min-h-[200px]">
+                        <ul id="task-list" class="space-y-2">
+                            <!-- JSで挿入 -->
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-right shrink-0">
+                        <button id="clear-completed" class="text-sm text-slate-500 hover:text-red-500 transition-colors inline-flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> 完了済みを削除
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // =========================================================================
+        // 【重要】ここにGASで発行した「ウェブアプリのURL」を貼り付けてください。
+        // （初期状態のままだとエラーになり通信できません）
+        // =========================================================================
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwq9z2JBnFfsbp_BUG5TZgUhvVQm-OQYMECVYGDqTECK-qJcncCGBx1uobN5lf-kS1ZDQ/exec'; 
+
+        
+        // ==========================================
+        // カウントダウン機能
+        // ==========================================
+        const targetDate = new Date('2027-01-16T00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            const container = document.getElementById('countdown-container');
+            const message = document.getElementById('countdown-message');
+
+            if (distance < 0) {
+                container.classList.add('hidden');
+                message.classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+
+        // ==========================================
+        // チェックリスト＆GAS連携機能
+        // ==========================================
+        let currentUserId = localStorage.getItem('study_portal_userid');
+        let tasks = [];
+
+        // DOM Elements
+        const loginSection = document.getElementById('login-section');
+        const taskSection = document.getElementById('task-section');
+        const loginForm = document.getElementById('login-form');
+        const useridInput = document.getElementById('userid-input');
+        const userInfo = document.getElementById('user-info');
+        const displayUsername = document.getElementById('display-username');
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        const taskList = document.getElementById('task-list');
+        const taskForm = document.getElementById('task-form');
+        const taskInput = document.getElementById('task-input');
+        const taskSubmitBtn = document.getElementById('task-submit-btn');
+        const syncStatus = document.getElementById('sync-status');
+        const clearBtn = document.getElementById('clear-completed');
+        const gasWarning = document.getElementById('gas-warning');
+
+        // URLが初期状態かチェック
+        const isGasUrlConfigured = !GAS_WEB_APP_URL.includes('PLEASE_REPLACE_THIS');
+        if (!isGasUrlConfigured) {
+            gasWarning.classList.remove('hidden');
+        }
+
+        // GASへのフェッチラッパー
+        async function fetchGAS(action, payload = {}) {
+            if (!isGasUrlConfigured) {
+                alert("【エラー】GASのURLが設定されていません。\nソースコード内の GAS_WEB_APP_URL に正しいURLを設定してください。");
+                return { status: 'error', message: 'URL not configured' };
+            }
+
+            try {
+                syncStatus.classList.remove('hidden');
+                const response = await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' }, // CORS対応
+                    body: JSON.stringify({ action: action, userId: currentUserId, ...payload })
+                });
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('GAS Fetch Error:', error);
+                return { status: 'error', message: error.toString() };
+            } finally {
+                syncStatus.classList.add('hidden');
+            }
+        }
+
+        // 初期化
+        function init() {
+            if (currentUserId) {
+                showTaskSection();
+                loadTasks();
+            } else {
+                showLoginSection();
+            }
+        }
+
+        function showLoginSection() {
+            loginSection.classList.remove('hidden');
+            taskSection.classList.add('hidden');
+            userInfo.classList.add('hidden');
+        }
+
+        function showTaskSection() {
+            loginSection.classList.add('hidden');
+            taskSection.classList.remove('hidden');
+            taskSection.classList.add('flex');
+            userInfo.classList.remove('hidden');
+            displayUsername.textContent = currentUserId;
+            
+            taskInput.disabled = !isGasUrlConfigured;
+            taskSubmitBtn.disabled = !isGasUrlConfigured;
+        }
+
+        // ログイン
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = useridInput.value.trim();
+            if (id) {
+                currentUserId = id;
+                localStorage.setItem('study_portal_userid', id);
+                showTaskSection();
+                loadTasks();
+            }
+        });
+
+        // ログアウト
+        logoutBtn.addEventListener('click', () => {
+            currentUserId = null;
+            localStorage.removeItem('study_portal_userid');
+            tasks = [];
+            showLoginSection();
+        });
+
+        // 読み込み
+        async function loadTasks() {
+            if (!isGasUrlConfigured) {
+                taskList.innerHTML = '<li class="text-center text-red-500 py-8 text-sm bg-red-50 rounded-lg">GASのURLが設定されていないため、読み込めません。</li>';
+                return;
+            }
+
+            taskList.innerHTML = '<li class="text-center text-slate-400 py-8 text-sm flex justify-center items-center gap-2"><div class="loader w-4 h-4"></div>読み込み中...</li>';
+            const result = await fetchGAS('getTasks');
+            
+            if (result.status === 'success') {
+                tasks = result.tasks || [];
+                renderTasks();
+            } else {
+                taskList.innerHTML = '<li class="text-center text-red-500 py-4 text-sm bg-red-50 rounded">データの読み込みに失敗しました。</li>';
+            }
+        }
+
+        // 描画
+        function renderTasks() {
+            taskList.innerHTML = '';
+            
+            const hasCompleted = tasks.some(t => t.completed);
+            clearBtn.disabled = !hasCompleted;
+
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<li class="text-center text-slate-400 py-8 text-sm">タスクはありません。<br>上の入力欄から追加してみましょう！</li>';
+                return;
+            }
+
+            tasks.forEach((task) => {
+                const li = document.createElement('li');
+                li.className = `flex items-center justify-between p-3 border rounded-xl transition-all duration-200 ${task.completed ? 'bg-slate-50 border-slate-200 opacity-70' : 'bg-white border-slate-200 shadow-sm hover:border-blue-300'}`;
+                
+                const leftDiv = document.createElement('div');
+                leftDiv.className = "flex items-center gap-3 overflow-hidden flex-1";
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = "w-5 h-5 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer flex-shrink-0 transition-transform hover:scale-110";
+                checkbox.checked = task.completed;
+                checkbox.onchange = () => toggleTask(task.id, !task.completed);
+                
+                const span = document.createElement('span');
+                span.textContent = task.text;
+                span.className = `truncate cursor-pointer select-none flex-1 py-1 ${task.completed ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}`;
+                span.onclick = () => toggleTask(task.id, !task.completed);
+                
+                leftDiv.appendChild(checkbox);
+                leftDiv.appendChild(span);
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i>';
+                deleteBtn.className = "text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors p-2 rounded-lg flex-shrink-0 ml-2";
+                deleteBtn.onclick = () => deleteTask(task.id);
+                
+                li.appendChild(leftDiv);
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            });
+            lucide.createIcons();
+        }
+
+        // 追加
+        taskForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = taskInput.value.trim();
+            if (!text || !isGasUrlConfigured) return;
+
+            taskInput.disabled = true;
+            taskSubmitBtn.disabled = true;
+            
+            // 楽観的UI更新（先に追加して表示）
+            const tempId = 'temp_' + Date.now();
+            tasks.push({ id: tempId, text: text, completed: false });
+            renderTasks();
+            taskInput.value = '';
+
+            const result = await fetchGAS('addTask', { text: text });
+            
+            if (result.status === 'success') {
+                const idx = tasks.findIndex(t => t.id === tempId);
+                if(idx !== -1) tasks[idx].id = result.taskId; // 正式なIDに置換
+            } else {
+                tasks = tasks.filter(t => t.id !== tempId); // 失敗時は削除
+                renderTasks();
+                alert("タスクの追加に失敗しました。");
+            }
+
+            taskInput.disabled = false;
+            taskSubmitBtn.disabled = false;
+            taskInput.focus();
+        });
+
+        // 切り替え
+        async function toggleTask(taskId, isCompleted) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task || taskId.startsWith('temp_')) return;
+            
+            task.completed = isCompleted;
+            renderTasks(); // 楽観的UI更新
+
+            const result = await fetchGAS('updateTask', { taskId: taskId, completed: isCompleted });
+            if(result.status !== 'success') {
+                task.completed = !isCompleted; // 失敗時ロールバック
+                renderTasks();
+            }
+        }
+
+        // 削除
+        async function deleteTask(taskId) {
+            if (taskId.startsWith('temp_')) return;
+            
+            const originalTasks = [...tasks];
+            tasks = tasks.filter(t => t.id !== taskId);
+            renderTasks(); // 楽観的UI更新
+
+            const result = await fetchGAS('deleteTask', { taskId: taskId });
+            if(result.status !== 'success') {
+                tasks = originalTasks; // ロールバック
+                renderTasks();
+            }
+        }
+
+        // 完了済み全削除
+        clearBtn.addEventListener('click', async () => {
+            const completedIds = tasks.filter(t => t.completed && !t.id.startsWith('temp_')).map(t => t.id);
+            if (completedIds.length === 0) return;
+
+            const originalTasks = [...tasks];
+            tasks = tasks.filter(t => !t.completed);
+            renderTasks();
+
+            const result = await fetchGAS('clearCompleted', { taskIds: completedIds });
+            if(result.status !== 'success') {
+                tasks = originalTasks;
+                renderTasks();
+                alert("削除に失敗しました。");
+            }
+        });
+
+        // Initialize Icons & App
+        lucide.createIcons();
+        init();
+
+    </script>
+</body>
+</html>
